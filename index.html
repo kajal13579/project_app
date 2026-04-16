@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blood Donation App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {font-family: Arial; margin:0; background:#f5f5f5;}
+    header {background:#c0392b; color:white; padding:15px; text-align:center;}
+    nav {background:#e74c3c; padding:10px; text-align:center;}
+    nav a {color:white; margin:10px; text-decoration:none; font-weight:bold;}
+    section {padding:20px;}
+    .card {background:white; padding:15px; margin:10px 0; border-radius:10px; box-shadow:0 0 10px #ccc;}
+    input, select, textarea {width:100%; padding:10px; margin:5px 0;}
+    button {background:#c0392b; color:white; padding:10px; border:none; cursor:pointer;}
+    footer {background:#333; color:white; text-align:center; padding:10px;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Blood Donation App</h1>
+  <p>Save Lives ❤️</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#register">Register Donor</a>
+  <a href="#find">Find Blood</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<section id="home">
+  <div class="card">
+    <h2>Welcome</h2>
+    <p>This app helps you find blood donors quickly.</p>
+  </div>
+</section>
+
+<section id="register">
+  <div class="card">
+    <h2>Register as Donor</h2>
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="phone" placeholder="Phone">
+    <input type="text" id="address" placeholder="Address">
+    <select id="blood">
+      <option>A+</option><option>B+</option><option>O+</option>
+      <option>AB+</option><option>A-</option><option>B-</option>
+      <option>O-</option><option>AB-</option>
+    </select>
+    <button onclick="registerDonor()">Register</button>
+  </div>
+</section>
+
+<section id="find">
+  <div class="card">
+    <h2>Find Blood</h2>
+    <select id="searchBlood">
+      <option>A+</option><option>B+</option><option>O+</option>
+      <option>AB+</option><option>A-</option><option>B-</option>
+      <option>O-</option><option>AB-</option>
+    </select>
+    <button onclick="findDonor()">Search</button>
+    <div id="result"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="card">
+    <h2>Contact Us</h2>
+    <input type="text" placeholder="Your Name">
+    <input type="email" placeholder="Email">
+    <textarea placeholder="Message"></textarea>
+    <button>Send</button>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Blood Donation App</p>
+</footer>
+
+<script>
+  let donors = JSON.parse(localStorage.getItem('donors')) || [];
+
+  function registerDonor() {
+    let donor = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      address: document.getElementById('address').value,
+      blood: document.getElementById('blood').value
+    };
+    donors.push(donor);
+    localStorage.setItem('donors', JSON.stringify(donors));
+    alert("Registered Successfully!");
+  }
+
+  function findDonor() {
+    let type = document.getElementById('searchBlood').value;
+    let result = donors.filter(d => d.blood === type);
+    let output = "";
+
+    if(result.length === 0) {
+      output = "No donors found";
+    } else {
+      result.forEach(d => {
+        output += `<p><b>${d.name}</b><br>Phone: ${d.phone}<br>Address: ${d.address}</p>`;
+      });
+    }
+    document.getElementById('result').innerHTML = output;
+  }
+</script>
+
+</body>
+</html>
